@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "bitbotng"
+version = "1.0.0"
+description = "meow meow"
+authors = ["by77er <by77er@gmail.com>"]
+license = "GNU AGPL 3.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+py-cord = "^2.4.1"
+python-dotenv = "^1.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
