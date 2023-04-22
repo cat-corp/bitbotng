@@ -421,6 +421,21 @@ files = [
 ]
 
 [[package]]
+name = "prometheus-client"
+version = "0.16.0"
+description = "Python client for the Prometheus monitoring system."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "prometheus_client-0.16.0-py3-none-any.whl", hash = "sha256:0836af6eb2c8f4fed712b2f279f6c0a8bbab29f9f4aa15276b91c7cb0d1616ab"},
+    {file = "prometheus_client-0.16.0.tar.gz", hash = "sha256:a03e35b359f14dd1630898543e2120addfdeacd1a6069c1367ae90fd93ad3f48"},
+]
+
+[package.extras]
+twisted = ["twisted"]
+
+[[package]]
 name = "py-cord"
 version = "2.4.1"
 description = "A Python wrapper for the Discord API"
@@ -559,4 +574,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "b5866a577de121ff29046c1c6997debe25af7bde90e06e7130946bf51e759a14"
+content-hash = "24a90e989ee8e6fc7d7d932245c67f3b9f77da7b6dbd6174d1ecb90154525224"

@@ -1,9 +1,15 @@
 import os
 import discord
+from cogs.monitoring import Monitoring
 from dotenv import load_dotenv
 
 load_dotenv()
-bot = discord.Bot()
+
+intents = intents = discord.Intents.default()
+intents.members = True
+
+bot = discord.Bot(intents=intents)
+bot.add_cog(Monitoring(bot))
 
 @bot.event
 async def on_ready():

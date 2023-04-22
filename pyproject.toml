@@ -10,6 +10,7 @@ readme = "README.md"
 python = "^3.9"
 py-cord = "^2.4.1"
 python-dotenv = "^1.0.0"
+prometheus-client = "^0.16.0"
 
 
 [build-system]
