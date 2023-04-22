@@ -10,3 +10,5 @@ services:
         source: ./.env
         target: /app/.env
         read_only: true
+    ports:
+      - "8192:8192"
