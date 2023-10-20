@@ -91,11 +91,13 @@ class Birthdays(commands.Cog):
 
         today = self.get_date()
         def format_bday(date: datetime.date):
-            span = "Today!" if date == today else f"{(date - today).days} days"
+            numdays = (date - today).days
+            span = "Today!" if numdays == 0 else f"{numdays} day{'s' if numdays != 1 else ''}"
             return f"{date.strftime('%b')} {date.day} ({span})"
 
-        sorted_bdays = [(user, self.adjust_date(today, bday)) for user, bday in birthdays][:limit]
+        sorted_bdays = [(user, self.adjust_date(today, bday)) for user, bday in birthdays]
         sorted_bdays.sort(key=lambda x: x[1])
+        sorted_bdays = sorted_bdays[:limit]
 
         msg = "\n".join(["**Upcoming birthdays:**"] + [f"{format_bday(date)} - {ctx.guild.get_member(user).mention}" for user, date in sorted_bdays if ctx.guild.get_member(user) is not None])
 
