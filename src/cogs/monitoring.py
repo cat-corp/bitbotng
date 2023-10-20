@@ -2,6 +2,7 @@ import prometheus_client
 from prometheus_client import start_http_server, Gauge, Counter
 from discord.ext import commands
 import discord
+import logging
 
 prometheus_client.REGISTRY.unregister(prometheus_client.GC_COLLECTOR)
 prometheus_client.REGISTRY.unregister(prometheus_client.PLATFORM_COLLECTOR)
@@ -10,9 +11,11 @@ prometheus_client.REGISTRY.unregister(prometheus_client.PROCESS_COLLECTOR)
 class Monitoring(commands.Cog):
     bot: discord.Bot
     member_count_gauge: Gauge
+    log: logging.Logger
 
-    def __init__(self, bot):
+    def __init__(self, bot, logger):
         self.bot = bot
+        self.log = logger
         self.messages_sent_count = Counter("discord_guild_messages_sent", "Number of messages sent in a guild", ["name"])
         self.guild_count_gauge = Gauge("discord_guild_count", "Number of guilds the bot is a member of")
         self.member_count_gauge = Gauge("discord_guild_member_count", "Number of members in a guild", ["name"])
@@ -24,6 +27,7 @@ class Monitoring(commands.Cog):
         for guild in self.bot.guilds:
             self.member_count_gauge.labels(guild.name).set(guild.member_count)
             self.messages_sent_count.labels(guild.name)
+        self.log.info("Started prometheus module")
 
 
     @commands.Cog.listener()
@@ -48,5 +52,8 @@ class Monitoring(commands.Cog):
         self.member_count_gauge.labels(guild).dec()
 
     @commands.Cog.listener()
+    @discord.guild_only()
     async def on_message(self, message: discord.Message):
+        if message.author.bot:
+            return
         self.messages_sent_count.labels(message.guild.name).inc()
