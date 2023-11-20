@@ -21,6 +21,7 @@ class Birthdays(commands.Cog):
     def __init__(self, bot, logger):
         self.bot = bot
         self.log = logger
+        self.initialized = False
     
     @commands.Cog.listener()
     async def on_ready(self):
@@ -43,6 +44,11 @@ class Birthdays(commands.Cog):
             await cur.close()
             await db.commit()
 
+        if self.initialized:
+            self.log.info("Birthday module already initialized")
+            return
+        
+        self.initialized = True
         self.log.info("Started birthday module")
         
         now = self.get_datetime()
