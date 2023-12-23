@@ -21,7 +21,6 @@ class Birthdays(commands.Cog):
     def __init__(self, bot, logger):
         self.bot = bot
         self.log = logger
-        self.initialized = False
     
     @commands.Cog.listener()
     async def on_ready(self):
@@ -43,14 +42,13 @@ class Birthdays(commands.Cog):
             """)
             await cur.close()
             await db.commit()
-
-        if self.initialized:
-            self.log.info("Birthday module already initialized")
-            return
         
-        self.initialized = True
+        self.poll_loop_task = asyncio.create_task(self.poll_loop())
         self.log.info("Started birthday module")
+
         
+    async def poll_loop(self):
+        self.log.info("Started birthday poll loop")
         now = self.get_datetime()
         schedule_time = datetime.datetime.combine(now.date(), BIRTHDAY_TIME)
         while True:
@@ -64,6 +62,11 @@ class Birthdays(commands.Cog):
             now = self.get_datetime()
             schedule_time = datetime.datetime.combine(now.date() + datetime.timedelta(days=1), BIRTHDAY_TIME, tzinfo=TIME_ZONE)
             
+
+    def cog_unload(self):
+        self.poll_loop_task.cancel()
+        self.log.info("Unloaded birthday module")
+
 
     @birthday_slash.command(name="set", description="Sets your birth date to have a message sent on your birthday!", group="birthday")
     @discord.commands.guild_only()
